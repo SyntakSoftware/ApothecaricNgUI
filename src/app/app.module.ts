@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { routing } from './app.routing';
 import { AuthGuard } from './_guards/auth.guard';
 import { LoginComponent } from './login/login.component';
-import { HomeComponent } from './home/home.coponent';
+import { HomeComponent } from './home/home.component';
 import { AuthenticationService } from './_services/auth.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ValuesService } from './_services/values.service';
