@@ -1,34 +1,29 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
 
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
-import { routing } from './app.routing';
-import { AuthGuard } from './_guards/auth.guard';
-import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
-import { AuthenticationService } from './_services/auth.service';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ValuesService } from './_services/values.service';
+import { LoginComponent } from './login/login.component';
+import { AuthGuard } from './_guards/auth.guard';
 import { TokenInterceptor } from './_interceptors/token.interceptor';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    routing
+    AppRoutingModule
   ],
   providers: [
     AuthGuard,
-    AuthenticationService,
-    ValuesService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
@@ -37,5 +32,4 @@ import { TokenInterceptor } from './_interceptors/token.interceptor';
   ],
   bootstrap: [AppComponent]
 })
-
 export class AppModule { }

@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../_services/auth.service';
 
 @Component({
-    moduleId: module.id.toString(),
     templateUrl: 'login.component.html'
 })
 
@@ -22,11 +21,11 @@ export class LoginComponent implements OnInit {
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
 
-    login() {
+    async login() {
         this.loading = true;
-        this.authenticationService.login(this.model.username, this.model.password)
-            .subscribe(
-                data => { this.router.navigate([this.returnUrl]); }
-            );
+        const user = await this.authenticationService.login(this.model.username, this.model.password);
+        if (user) {
+            this.router.navigate([this.returnUrl]);
+        }
     }
 }

@@ -1,17 +1,19 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 import { HttpClient } from '@angular/common/http';
-import { ICurrentUser } from '../_models/currentUser';
-import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { ICurrentUser } from "../_models/currentUser.model";
+import { Observable } from "rxjs";
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+  })
 export class AuthenticationService {
 
     constructor(private http: HttpClient, private router: Router) { }
 
-    login(email: string, password: string) : Observable<ICurrentUser> {
-        return this.http.post<ICurrentUser>("http://localhost:53217/api/Account/Token", { 'email': email, 'password': password })
+    login(email: string, password: string) : Promise<ICurrentUser> {
+        return this.http.post<ICurrentUser>("https://localhost:54172/api/Account/Token", { 'email': email, 'password': password })
         .pipe(
             map(user => {
                 
@@ -20,7 +22,7 @@ export class AuthenticationService {
                 }
 
                 return <ICurrentUser>user;
-            }));
+            })).toPromise();
     }
 
     logout() {
@@ -32,7 +34,7 @@ export class AuthenticationService {
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
         let token = currentUser.refreshToken;
 
-        return this.http.post<ICurrentUser>("http://localhost:53217/api/Account/Token/Refresh", { 'token': token })
+        return this.http.post<ICurrentUser>("https://localhost:54172/api/Account/Token/Refresh", { 'token': token })
         .pipe(
             map(user => {
                 

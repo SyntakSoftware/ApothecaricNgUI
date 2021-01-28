@@ -1,10 +1,9 @@
-import { Injectable, Injector } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpHeaderResponse, HttpSentEvent, HttpProgressEvent, HttpResponse, HttpUserEvent, HttpErrorResponse } from '@angular/common/http';
-import { Observable, BehaviorSubject, throwError } from 'rxjs';
-import { AuthenticationService } from '../_services/auth.service';
-import { catchError, switchMap, filter, take, finalize } from 'rxjs/operators';
-import { ICurrentUser } from '../_models/currentUser';
-
+import { HttpHandler, HttpInterceptor, HttpRequest, HttpErrorResponse, HttpEvent } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { BehaviorSubject, Observable, throwError } from "rxjs";
+import { catchError, filter, finalize, switchMap, take } from 'rxjs/operators';
+import { ICurrentUser } from "../_models/currentUser.model";
+import { AuthenticationService } from "../_services/auth.service";
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -14,7 +13,7 @@ export class TokenInterceptor implements HttpInterceptor {
     isRefreshingToken: boolean = false;
     tokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
-    intercept(request: HttpRequest<any>, next: HttpHandler) : Observable<HttpSentEvent | HttpHeaderResponse | HttpProgressEvent | HttpResponse<any> | HttpUserEvent<any> | any> {
+    intercept(request: HttpRequest<any>, next: HttpHandler) : Observable<HttpEvent<any> | any> {
 
         return next.handle(this.addTokenToRequest(request, this.authService.getAuthToken()))
         .pipe(
